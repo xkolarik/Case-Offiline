@@ -1,0 +1,12 @@
+Configurações da API -
+
+- Teste da Aplicação.
+
+- Configuração do Mongo DB está no arquivo application.properties, instalar o docker e e usar
+  docker run --name mongo -p 27017:27017 -d mongo:latest entre outras.
+
+- Build com Maven. 
+
+- Teste utilizando o JUNIT.
+
+- Teste da API com Postman.
