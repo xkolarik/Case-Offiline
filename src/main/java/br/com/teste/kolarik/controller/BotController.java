@@ -2,46 +2,42 @@ package br.com.teste.kolarik.controller;
 
 import java.util.List;
 import javax.validation.Valid;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.teste.kolarik.model.Bot;
 import br.com.teste.kolarik.service.BotService;
 
 @RestController
-@RequestMapping("/bots")
+@RequestMapping("/api")
 public class BotController {
 
 	@Autowired
 	BotService service;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public List<Bot> getAllBots() {
-		return service.getAll();
+	@ApiOperation(value = "Criar Bot")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 401, message = "Unauthorized"),
+			@ApiResponse(code = 500, message = "Internal Server Error")})
+	@PostMapping(value = "/bots")
+	public Bot createBot(@Valid @RequestBody String id, String name) {
+		return service.create(id,name);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public Bot getBotById(@RequestParam (value="id",required=true)ObjectId id, Bot bot) {
+
+	@ApiOperation(value = "Listar Bots")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 401, message = "Unauthorized"),
+			@ApiResponse(code = 500, message = "Internal Server Error")})
+	@RequestMapping(value = "/bots/{id}", method = RequestMethod.GET)
+	public Bot getBotById(@RequestParam (value="id",required=true)String id) {
 		return service.getById(id);
-	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public Bot modifyBotById(@RequestParam(value="id", required=true) ObjectId id, @RequestBody Bot bot) {
-		return service.update(id, bot);
-	}
-
-	@RequestMapping(value = "/", method = RequestMethod.PUT)
-	public Bot createBot(@Valid @RequestBody Bot bot) {
-		return service.create(bot);
-	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void deleteBot(@RequestParam(value="id", required=true) ObjectId id) {
-		service.delete(id);
 	}
 }

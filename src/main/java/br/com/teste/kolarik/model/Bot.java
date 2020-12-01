@@ -4,10 +4,7 @@ public class Bot {
 	
 	private String id;
 	private String name;
-	
-	public Bot() {
-	}
-	
+
 	public String getId() {
 		return id;
 	}
